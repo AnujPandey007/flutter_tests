@@ -17,15 +17,9 @@ void main() {
 
   group('UserRepository - ', () {
     group('getUser function', () {
-      test(
-        'given UserRepository class when getUser function is called and status code is 200 then a usermodel should be returned',
-            () async {
+      test('given UserRepository class when getUser function is called and status code is 200 then a usermodel should be returned', () async {
           // Arrange
-          when(
-                () => mockHTTPClient.get(
-              Uri.parse('https://jsonplaceholder.typicode.com/users/1'),
-            ),
-          ).thenAnswer((invocation) async {
+          when(() => mockHTTPClient.get(Uri.parse('https://jsonplaceholder.typicode.com/users/1'))).thenAnswer((_) async {
             return Response('''
             {
               "id": 1,
@@ -39,19 +33,13 @@ void main() {
           // Act
           final user = await userRepository.getUser();
           // Assert
-          expect(user, isA<User>());
+          expect(user, isA<User>(), skip: false, reason: "Because it should return an User");
         },
       );
 
-      test(
-        'given UserRepository class when getUser function is called and status code is not 200 then an exception should be thrown',
-            () async {
+      test('given UserRepository class when getUser function is called and status code is not 200 then an exception should be thrown', () {
           // arrange
-          when(
-                () => mockHTTPClient.get(
-              Uri.parse('https://jsonplaceholder.typicode.com/users/1'),
-            ),
-          ).thenAnswer((invocation) async => Response('{}', 500));
+          when(() => mockHTTPClient.get(Uri.parse('https://jsonplaceholder.typicode.com/users/1')),).thenAnswer((_) async => Response('{}', 500));
           // act
           final user = userRepository.getUser();
           // assert
